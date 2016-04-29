@@ -12,16 +12,16 @@ class InlineEdit {
      * When instantiated.
      * @param {HTMLElement} el - The element that is to be made editable
      * @param {Object} [options] - The options
-     * @param {String} [options.editingClass] - The CSS class that will be applied when the element is being edited
-     * @param {String} [options.editElementClass] - A custom CSS class that will be applied to the editable version of the element
+     * @param {String} [options.editingClass] - The CSS class that will be applied to the editable element during editing
+     * @param {String} [options.type] - The element type, defaults to 'text' but also supports "textarea" atm
      * @param {Function} [options.onChange] - When the user has committed a new value in the editable field
      */
     constructor (el, options) {
 
         this.options = _.extend({
             editingClass: 'editing',
-            editElementClass: 'edit-field',
-            onChange: null
+            onChange: null,
+            type: 'text'
         }, options);
 
         this.el = el;
@@ -31,8 +31,13 @@ class InlineEdit {
 
         this.el.addEventListener('click', this._onClickEventListener, true);
 
-        this._inputEl = document.createElement('textarea');
-        this._inputEl.classList.add(this.options.editElementClass);
+        if (this.options.type === 'textarea') {
+            this._inputEl = document.createElement('textarea');
+        } else {
+            this._inputEl = document.createElement('input');
+            this._inputEl.type = 'text';
+        }
+        this._inputEl.classList.add(this.options.editingClass);
         this._inputEl.addEventListener('blur', this._onBlurEventListener, true);
     }
 
@@ -42,7 +47,6 @@ class InlineEdit {
         }
         this.editing = true;
 
-        this.el.classList.add(this.options.editingClass);
         this._inputEl.value = this.el.textContent.trim();
         this.el.parentNode.replaceChild(this._inputEl, this.el);
         this._inputEl.focus();
@@ -57,7 +61,6 @@ class InlineEdit {
         if (this.el.contains(this._inputEl)) {
             this.el.removeChild(this._inputEl);
         }
-        this.el.classList.remove(this.options.editingClass);
         this._inputEl.parentNode.replaceChild(this.el, this._inputEl);
         this.editing = false;
         this._inputEl.blur();
