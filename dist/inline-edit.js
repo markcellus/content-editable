@@ -1,5 +1,5 @@
 /** 
-* inline-edit-js - v1.0.0.
+* inline-edit-js - v1.0.1.
 * git+https://github.com/mkay581/inline-edit-js.git
 * Copyright 2016 undefined. Licensed MIT.
 */
@@ -16063,9 +16063,8 @@ var InlineEdit = function () {
      * When instantiated.
      * @param {HTMLElement} el - The element that is to be made editable
      * @param {Object} [options] - The options
-     * @param {String} [options.editingClass] - The CSS class that will be applied when the element is editable
-     * @param {String} [options.hoverClass] - The CSS class that will be applied when hovering over the element
-     * @param {String} [options.editElementClass] - A custom CSS class that will be applied to the editable version of the element
+     * @param {String} [options.editingClass] - The CSS class that will be applied to the editable element during editing
+     * @param {String} [options.type] - The element type, defaults to 'text' but also supports "textarea" atm
      * @param {Function} [options.onChange] - When the user has committed a new value in the editable field
      */
 
@@ -16074,23 +16073,24 @@ var InlineEdit = function () {
 
         this.options = _lodash2.default.extend({
             editingClass: 'editing',
-            hoverClass: 'hovering',
-            editElementClass: 'edit-field',
-            onChange: null
+            onChange: null,
+            type: 'text'
         }, options);
 
         this.el = el;
 
         this._onClickEventListener = this.onClickElement.bind(this);
-        this._onHoverEventListener = this.onHoverElement.bind(this);
         this._onBlurEventListener = this.onBlurInput.bind(this);
 
-        this.el.addEventListener('mouseenter', this._onHoverEventListener, true);
-        this.el.addEventListener('mouseout', this._onHoverEventListener, true);
         this.el.addEventListener('click', this._onClickEventListener, true);
 
-        this._inputEl = document.createElement('textarea');
-        this._inputEl.classList.add(this.options.editElementClass);
+        if (this.options.type === 'textarea') {
+            this._inputEl = document.createElement('textarea');
+        } else {
+            this._inputEl = document.createElement('input');
+            this._inputEl.type = 'text';
+        }
+        this._inputEl.classList.add(this.options.editingClass);
         this._inputEl.addEventListener('blur', this._onBlurEventListener, true);
     }
 
@@ -16102,8 +16102,7 @@ var InlineEdit = function () {
             }
             this.editing = true;
 
-            this.el.classList.add(this.options.editingClass);
-            this._inputEl.value = this.el.textContent;
+            this._inputEl.value = this.el.textContent.trim();
             this.el.parentNode.replaceChild(this._inputEl, this.el);
             this._inputEl.focus();
         }
@@ -16118,7 +16117,6 @@ var InlineEdit = function () {
             if (this.el.contains(this._inputEl)) {
                 this.el.removeChild(this._inputEl);
             }
-            this.el.classList.remove(this.options.editingClass);
             this._inputEl.parentNode.replaceChild(this.el, this._inputEl);
             this.editing = false;
             this._inputEl.blur();
@@ -16126,6 +16124,8 @@ var InlineEdit = function () {
     }, {
         key: 'onBlurInput',
         value: function onBlurInput() {
+
+            var oldValue = this.el.textContent;
             this.hideEdit();
 
             if (this._inputEl.value === this.el.textContent) {
@@ -16134,16 +16134,7 @@ var InlineEdit = function () {
             this.el.textContent = this._inputEl.value;
 
             if (this.options.onChange) {
-                this.options.onChange(this._inputEl.value);
-            }
-        }
-    }, {
-        key: 'onHoverElement',
-        value: function onHoverElement(e) {
-            if (e.type === 'mouseenter') {
-                this.el.classList.add(this.options.hoverClass);
-            } else {
-                this.el.classList.remove(this.options.hoverClass);
+                this.options.onChange(this._inputEl.value, oldValue);
             }
         }
     }, {
@@ -16154,8 +16145,6 @@ var InlineEdit = function () {
     }, {
         key: 'destroy',
         value: function destroy() {
-            this.el.removeEventListener('mouseenter', this._onHoverEventListener, true);
-            this.el.removeEventListener('mouseout', this._onHoverEventListener, true);
             this.el.removeEventListener('click', this._onClickEventListener, true);
             this._inputEl.removeEventListener('blur', this._onBlurEventListener, true);
             this.hideEdit();
