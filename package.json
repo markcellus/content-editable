@@ -1,6 +1,6 @@
 {
   "name": "inline-edit-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Make any element editable inline using pure, vanilla javascript",
   "main": "src/inline-edit.js",
   "scripts": {
