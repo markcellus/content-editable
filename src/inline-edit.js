@@ -43,7 +43,7 @@ class InlineEdit {
         this.editing = true;
 
         this.el.classList.add(this.options.editingClass);
-        this._inputEl.value = this.el.textContent;
+        this._inputEl.value = this.el.textContent.trim();
         this.el.parentNode.replaceChild(this._inputEl, this.el);
         this._inputEl.focus();
     }
