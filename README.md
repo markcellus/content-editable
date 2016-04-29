@@ -28,7 +28,7 @@ You can also listen in on when the text field contents have changed.
 ```javascript
 let el = document.getElementById('my-text');
 let editable = new InlineEdit(el, {
-    onChange: (newValue) => {
+    onChange: (newValue, oldValue) => {
        // the value has changed
     }
 });
