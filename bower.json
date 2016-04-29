@@ -1,0 +1,31 @@
+{
+  "name": "inline-edit-js",
+  "description": "Make any element editable inline using pure, vanilla javascript",
+  "main": "src/inline-edit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "inline edit",
+    "inline",
+    "editable",
+    "fields",
+    "text field"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkay581/inline-edit-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkay581/inline-edit-js/issues"
+  },
+  "homepage": "https://github.com/mkay581/inline-edit-js#readme",
+  "dependencies": {
+    "lodash": "^4.11.1"
+  },
+  "devDependencies": {
+    "build-tools": "^3.1.7"
+  }
+}
