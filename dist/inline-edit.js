@@ -1,5 +1,5 @@
 /** 
-* inline-edit-js - v1.0.2.
+* inline-edit-js - v1.1.0.
 * git+https://github.com/mkay581/inline-edit-js.git
 * Copyright 2016 undefined. Licensed MIT.
 */
@@ -16101,10 +16101,9 @@ var InlineEdit = function () {
         this._onClickEventListener = this.onClickElement.bind(this);
         this._onBlurEventListener = this.onCommit.bind(this);
 
-        this.el.addEventListener('click', this._onClickEventListener, true);
+        this.bindEvents();
 
         this._editEl.classList.add(this.options.editingClass);
-        this._editEl.addEventListener('blur', this._onBlurEventListener, true);
     }
 
     _createClass(InlineEdit, [{
@@ -16156,6 +16155,31 @@ var InlineEdit = function () {
             }
         }
     }, {
+        key: 'disable',
+        value: function disable() {
+            this.hideEdit();
+            this._editEl.disable = true;
+            this.unbindEvents();
+        }
+    }, {
+        key: 'enable',
+        value: function enable() {
+            this.bindEvents();
+            this._editEl.disable = false;
+        }
+    }, {
+        key: 'bindEvents',
+        value: function bindEvents() {
+            this.el.addEventListener('click', this._onClickEventListener, true);
+            this._editEl.addEventListener('blur', this._onBlurEventListener, true);
+        }
+    }, {
+        key: 'unbindEvents',
+        value: function unbindEvents() {
+            this.el.removeEventListener('click', this._onClickEventListener, true);
+            this._editEl.removeEventListener('blur', this._onBlurEventListener, true);
+        }
+    }, {
         key: 'onClickElement',
         value: function onClickElement() {
             this.showEdit();
@@ -16163,8 +16187,7 @@ var InlineEdit = function () {
     }, {
         key: 'destroy',
         value: function destroy() {
-            this.el.removeEventListener('click', this._onClickEventListener, true);
-            this._editEl.removeEventListener('blur', this._onBlurEventListener, true);
+            this.unbindEvents();
             this.hideEdit();
         }
     }]);
