@@ -48,10 +48,9 @@ class InlineEdit {
         this._onClickEventListener = this.onClickElement.bind(this);
         this._onBlurEventListener = this.onCommit.bind(this);
 
-        this.el.addEventListener('click', this._onClickEventListener, true);
+        this.bindEvents();
 
         this._editEl.classList.add(this.options.editingClass);
-        this._editEl.addEventListener('blur', this._onBlurEventListener, true);
     }
 
     showEdit() {
@@ -99,13 +98,33 @@ class InlineEdit {
         }
     }
 
+    disable () {
+        this.hideEdit();
+        this._editEl.disable = true;
+        this.unbindEvents();
+    }
+
+    enable () {
+        this.bindEvents();
+        this._editEl.disable = false;
+    }
+
+    bindEvents () {
+        this.el.addEventListener('click', this._onClickEventListener, true);
+        this._editEl.addEventListener('blur', this._onBlurEventListener, true);
+    }
+
+    unbindEvents () {
+        this.el.removeEventListener('click', this._onClickEventListener, true);
+        this._editEl.removeEventListener('blur', this._onBlurEventListener, true);
+    }
+
     onClickElement () {
         this.showEdit();
     }
 
     destroy () {
-        this.el.removeEventListener('click', this._onClickEventListener, true);
-        this._editEl.removeEventListener('blur', this._onBlurEventListener, true);
+        this.unbindEvents();
         this.hideEdit();
     }
 
