@@ -1,5 +1,5 @@
 /** 
-* inline-edit-js - v1.1.0.
+* inline-edit-js - v1.1.1.
 * git+https://github.com/mkay581/inline-edit-js.git
 * Copyright 2016 undefined. Licensed MIT.
 */
