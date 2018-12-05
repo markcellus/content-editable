@@ -1,47 +1,66 @@
 {
-  "name": "inline-edit-js",
-  "version": "1.1.1",
-  "description": "Make any element editable inline using pure, vanilla javascript",
-  "main": "src/inline-edit.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "inline edit",
-    "inline",
-    "editable",
-    "fields",
-    "text field"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mkay581/inline-edit-js.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mkay581/inline-edit-js/issues"
-  },
-  "homepage": "https://github.com/mkay581/inline-edit-js#readme",
-  "dependencies": {
-    "lodash": "^4.11.1"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
-  },
-  "devDependencies": {
-    "babel-preset-es2015": "^6.6.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
-    "build-tools": "^3.1.7"
-  }
+    "name": "editable-content",
+    "version": "3.0.0",
+    "description": "An HTML element that makes its content editable",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mkay581/editable-content/issues"
+    },
+    "homepage": "https://github.com/mkay581/editable-content#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mkay581/editable-content.git"
+    },
+    "keywords": [
+        "editable input element",
+        "editable element",
+        "editable webcomponent",
+        "editable textfield component",
+        "inline edit component",
+        "inline edit",
+        "inline",
+        "editable",
+        "edit text field"
+    ],
+    "author": "Mark Kennedy <mark@heyimmark.com> (heyimmark.com)",
+    "engines": {
+        "node": ">=10"
+    },
+    "main": "dist/editable-content.js",
+    "types": "dist/editable-content.ts",
+    "scripts": {
+        "test": "karma start karma.conf.js && npm run lint",
+        "test-server": "karma start karma.conf.js --single-run=false",
+        "preversion": "npm test",
+        "minify": "uglifyjs dist/editable-content.js -o dist/editable-content.min.js",
+        "build-dist": "rm -rf dist/* && rollup -c && npm run minify",
+        "version": "npm run build-dist && banner-cli dist/*.js && git add -A dist",
+        "postversion": "git push && git push --tags",
+        "start": "rollup -c --watch",
+        "lint": "tslint src/**/*"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/mocha": "^5.2.5",
+        "banner-cli": "0.11.1",
+        "chai": "^4.2.0",
+        "karma": "^3.1.1",
+        "karma-chai": "^0.1.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-mocha": "^1.3.0",
+        "karma-rollup-preprocessor": "^6.1.0",
+        "karma-typescript-preprocessor": "^0.4.0",
+        "mocha": "^5.2.0",
+        "rollup": "^0.67.0",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-node-resolve": "^3.4.0",
+        "rollup-plugin-typescript2": "^0.18.0",
+        "tslint": "^5.11.0",
+        "tslint-config-prettier": "^1.15.0",
+        "typescript": "^3.1.6",
+        "uglify-es": "^3.3.9"
+    }
 }
