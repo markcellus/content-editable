@@ -1,3 +1,11 @@
+/*!
+ * Editable-content v3.0.1
+ * https://github.com/mkay581/editable-content#readme
+ *
+ * Copyright (c) 2018 Mark Kennedy
+ * Licensed under the ISC license
+ */
+
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 class EditableContent extends HTMLElement {
     constructor() {
