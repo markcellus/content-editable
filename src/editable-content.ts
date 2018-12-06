@@ -30,7 +30,7 @@ export class EditableContent extends HTMLElement {
 
     commit() {
         const { oldValue } = this;
-        this.dispatchEvent(new CustomEvent('commit', { detail: { newValue: this.textContent, oldValue } }));
+        this.dispatchEvent(new CustomEvent('edit', { detail: { newValue: this.textContent, oldValue } }));
     }
 }
 

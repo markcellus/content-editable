@@ -5,7 +5,7 @@
 
 A custom element that makes its contents editable by changing itself into an text field, when a user clicks on it.
 
-This library was created due to the current issues with the [`contenteditable` property in the specification](https://html.spec.whatwg.org/multipage/interaction.html#contenteditable).
+This library was created to support features missing in [the `contenteditable` property specification](https://html.spec.whatwg.org/multipage/interaction.html#contenteditable) and to alleviate its [inconsistent browser implementations](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content#Differences_in_markup_generation).
 
 ## Installation
 
@@ -28,17 +28,18 @@ You can listen in on when the text field contents have changed.
 
 ```javascript
 const element = document.querySelector('editable-content');
-element.addEventListener('change', e => {
-    // text has been changed
-    console.log(e.detail.oldValue); // old value
-    console.log(e.detail.newValue); // new value after change
-});
 element.addEventListener('edit', () => {
-    // user has pressed enter or focused out of the element after changing the text
+    // the element lost focused after text has been changed
     console.log(e.detail.oldValue); // old value
     console.log(e.detail.newValue); // new value after change
 });
 ```
+
+| Event  | Type          | Description                                                            |
+| ------ | ------------- | ---------------------------------------------------------------------- |
+| `edit` | `CustomEvent` | Fired when the text value has been changed and the element loses focus |
+
+Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
 ### Styling
 
