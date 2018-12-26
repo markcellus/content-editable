@@ -55,8 +55,8 @@ editable-content[editing] {
 
 ### Attributes
 
-| Attribute   | Type      | Description                                                                                                                                                                                                                                       |
-| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `readonly`  | `Boolean` | Whether the text should be editable or not. Defaults to `false`                                                                                                                                                                                   |
-| `multiline` | `Boolean` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. Defaults to `false`                                                                                                |
-
+| Attribute   | Type      | Default | Description                                                                                                                                                                                                                   |
+| ----------- | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                                                                                                                   |
+| `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one.                                                                                                |
+| `resize`    | `Boolean` | `false` | Whether the element should automatically grow its original height to accommodate new lines. If not specified, the height of the editable area will remain at its initial height and will scroll if there is overflowing text. |
