@@ -2,13 +2,19 @@ const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
     oldValue: string = '';
+    readonly: boolean;
+    multiline: boolean = false;
 
     connectedCallback() {
-        this.contentEditable = this.contentEditable || 'true';
-        this.oldValue = this.textContent || '';
+        this.contentEditable = this.readonly === true ? 'false' : 'true';
+        this.oldValue = this.textContent.trim() || '';
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
+        if (!this.multiline) {
+            this.addEventListener('keypress', this);
+            this.addEventListener('paste', this);
+        }
     }
 
     disconnectedCallback() {
@@ -26,12 +32,18 @@ export class EditableContent extends HTMLElement {
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
             this.textContent = this.oldValue;
             this.blur();
+        } else if (!this.multiline && e instanceof KeyboardEvent && e.type === 'keypress' && e.key === 'Enter') {
+            e.preventDefault();
+            this.commit();
         }
     }
 
     commit() {
         const { oldValue } = this;
-        this.dispatchEvent(new CustomEvent('edit', { detail: { newValue: this.textContent, oldValue } }));
+        const newValue = this.textContent.trim();
+        this.oldValue = newValue;
+        this.blur();
+        this.dispatchEvent(new CustomEvent('edit', { detail: { newValue, oldValue } }));
     }
 }
 

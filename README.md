@@ -52,3 +52,11 @@ editable-content[editing] {
     background-color: blue;
 }
 ```
+
+### Attributes
+
+| Attribute   | Type      | Description                                                                                                                                                                                                                                       |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `readonly`  | `Boolean` | Whether the text should be editable or not. Defaults to `false`                                                                                                                                                                                   |
+| `multiline` | `Boolean` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. Defaults to `false`                                                                                                |
+
