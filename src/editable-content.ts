@@ -22,6 +22,7 @@ export class EditableContent extends HTMLElement {
             this.setAttribute('editing', '');
         } else if (e.type === 'focusout') {
             this.removeAttribute('editing');
+            this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
             this.textContent = this.oldValue;
             this.blur();
