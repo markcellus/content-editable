@@ -1,4 +1,5 @@
 import anchorme from 'anchorme';
+import { URLObj } from 'anchorme/dist-node/util';
 
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
@@ -62,13 +63,30 @@ export class EditableContent extends HTMLElement {
 
     private parse() {
         let innerHTML = this.innerHTML.trim();
-        const parser = new DOMParser();
         if (this.hasAttribute('readonly')) {
+            const { childNodes } = this;
+            childNodes.forEach(node => {
+                const urls = anchorme(node.textContent, {
+                    list: true,
+                    emails: false,
+                    urls: true,
+                    ips: false,
+                    files: false
+                });
+                urls.forEach((item: URLObj) => {
+                    if (node.textContent) {
+                        const { raw: url } = item;
+                        const parser = new DOMParser();
+                        const htmlDoc = parser.parseFromString(`<a href="${url}">${url}</a>`, 'text/html');
+                        const anchor = htmlDoc.body.querySelector('a');
+                        if (anchor) {
+                            node.childNodes[0].replaceWith(anchor);
+                        }
+                    }
+                });
+            });
             innerHTML = anchorme(innerHTML);
         }
-        const htmlDoc = parser.parseFromString(innerHTML, 'text/html');
-        this.innerHTML = htmlDoc.body.innerHTML;
-        this.previousInnerHTML = this.innerHTML;
     }
 }
 
