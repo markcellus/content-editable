@@ -28,10 +28,10 @@ You can listen in on when the text field contents have changed.
 
 ```javascript
 const element = document.querySelector('editable-content');
-element.addEventListener('edit', () => {
-    // the element lost focused after text has been changed
-    console.log(e.detail.textContent); // new value after change
-    console.log(e.detail.previousTextContent); // old value
+element.addEventListener('edit', (e) => {
+    const {textContent, previousTextContent} = e.detail;
+    element.textContent = textContent; // update the element to new value
+    console.log(previousTextContent); // old value
 });
 ```
 
