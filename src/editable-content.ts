@@ -3,29 +3,15 @@ import anchorme from 'anchorme';
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
-    previousTextContent?: HTMLElement['textContent'];
-    private observer?: MutationObserver;
+    previousInnerHTML?: HTMLElement['textContent'];
 
     connectedCallback() {
         const readonly = this.hasAttribute('readonly');
         this.contentEditable = readonly ? 'false' : 'true';
-        this.previousTextContent = this.textContent;
-        if (this.textContent) {
-            this.parseContent(this.textContent);
+        this.parse();
+        if (readonly) {
+            return;
         }
-        if (readonly) return;
-
-        this.observer = new MutationObserver(mutationsList => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    if (this.textContent) {
-                        this.parseContent(this.textContent);
-                    }
-                }
-            }
-        });
-        this.observer.observe(this, { childList: true, subtree: true });
-
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
@@ -35,22 +21,12 @@ export class EditableContent extends HTMLElement {
         }
     }
 
-    parseContent(value?: HTMLElement['textContent']) {
-        if (!value) return;
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(value, 'text/html');
-        const { innerHTML } = htmlDoc.body;
-        if (innerHTML === this.innerHTML) return;
-        this.innerHTML = this.hasAttribute('readonly') ? anchorme(innerHTML) : innerHTML;
-    }
-
     disconnectedCallback() {
-        if (this.observer) {
-            this.observer.disconnect();
-        }
         SUPPORTED_EVENTS.forEach(type => {
             this.removeEventListener(type, this);
         });
+        this.removeEventListener('keypress', this);
+        this.removeEventListener('paste', this);
     }
 
     handleEvent(e: Event | KeyboardEvent) {
@@ -60,7 +36,7 @@ export class EditableContent extends HTMLElement {
             this.removeAttribute('editing');
             this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
-            this.parseContent(this.previousTextContent);
+            this.parse();
             this.blur();
         } else if (
             !this.hasAttribute('multiline') &&
@@ -70,17 +46,29 @@ export class EditableContent extends HTMLElement {
         ) {
             e.preventDefault();
             this.commit();
+        } else if (e.type === 'paste') {
+            this.parse();
         }
     }
 
-    commit() {
-        const { textContent, previousTextContent } = this;
-        this.parseContent(textContent);
-        this.previousTextContent = textContent;
+    private commit() {
+        const { previousInnerHTML, innerHTML } = this;
+        this.parse();
         this.blur();
-        if (previousTextContent !== textContent) {
-            this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
+        if (previousInnerHTML !== innerHTML) {
+            this.dispatchEvent(new CustomEvent('edit'));
         }
+    }
+
+    private parse() {
+        let innerHTML = this.innerHTML.trim();
+        const parser = new DOMParser();
+        if (this.hasAttribute('readonly')) {
+            innerHTML = anchorme(innerHTML);
+        }
+        const htmlDoc = parser.parseFromString(innerHTML, 'text/html');
+        this.innerHTML = htmlDoc.body.innerHTML;
+        this.previousInnerHTML = this.innerHTML;
     }
 }
 

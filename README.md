@@ -22,6 +22,29 @@ npm i editable-content
 
 Then, when clicking anywhere on the element, a text field will show allowing the user to change the text.
 
+## API
+
+### Attributes
+
+| Attribute   | Type      | Default | Description                                                                                                                    |
+| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                    |
+| `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. |
+
+
+### Methods
+
+#### renderContent([html])
+
+```javascript
+const element = document.querySelector('editable-content');
+element.renderContent(`<strong>This will be bold</strong> <br />This will appear on a new line`)
+```
+
+| Option    | Type              | Description    |
+| --------- | ----------------- | ------------------------------------------------------------------------------------------------ |
+| `html` | `String`     | An html string to render into the element    |
+
 ### Events
 
 You can listen in on when the text field contents have changed.
@@ -29,9 +52,8 @@ You can listen in on when the text field contents have changed.
 ```javascript
 const element = document.querySelector('editable-content');
 element.addEventListener('edit', (e) => {
-    const {textContent, previousTextContent} = e.detail;
-    element.textContent = textContent; // update the element to new value
-    console.log(previousTextContent); // old value
+     console.log(e.target.innerHTML); // the new value
+    console.log(e.target.previousInnerHTML); // old value
 });
 ```
 
@@ -41,7 +63,8 @@ element.addEventListener('edit', (e) => {
 
 Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
-### Styling
+
+## Styling
 
 An `editing` attribute is applied to the element when the text inside of the element is in focus. So you
 can style based on this attribute. The following turns the element's background to `blue` when
@@ -53,15 +76,7 @@ editable-content[editing] {
 }
 ```
 
-### Attributes
-
-| Attribute   | Type      | Default | Description                                                                                                                    |
-| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                    |
-| `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. |
-
-
-### Formatting
+#### Formatting whitespace
 
 If you would like for line breaks or any other formatting to be respected, just apply `white-space` css property.
 
@@ -69,3 +84,4 @@ If you would like for line breaks or any other formatting to be respected, just 
 editable-content {
     white-space: pre;
 }
+```
