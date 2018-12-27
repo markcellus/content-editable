@@ -1,5 +1,6 @@
 export declare class EditableContent extends HTMLElement {
-    oldValue: string;
+    previousTextContent: HTMLElement['textContent'];
+    constructor();
     connectedCallback(): void;
     disconnectedCallback(): void;
     handleEvent(e: Event | KeyboardEvent): void;
