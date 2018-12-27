@@ -30,8 +30,8 @@ You can listen in on when the text field contents have changed.
 const element = document.querySelector('editable-content');
 element.addEventListener('edit', () => {
     // the element lost focused after text has been changed
-    console.log(e.detail.oldValue); // old value
-    console.log(e.detail.newValue); // new value after change
+    console.log(e.detail.textContent); // new value after change
+    console.log(e.detail.previousTextContent); // old value
 });
 ```
 
@@ -59,4 +59,3 @@ editable-content[editing] {
 | ----------- | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                                                                                                                   |
 | `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one.                                                                                                |
-| `resize`    | `Boolean` | `false` | Whether the element should automatically grow its original height to accommodate new lines. If not specified, the height of the editable area will remain at its initial height and will scroll if there is overflowing text. |

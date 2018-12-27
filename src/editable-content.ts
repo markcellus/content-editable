@@ -1,17 +1,20 @@
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
-    oldValue: string = '';
-    readonly: boolean;
-    multiline: boolean = false;
+
+    previousTextContent: HTMLElement['textContent'];
+
+    constructor() {
+        super();
+        this.previousTextContent = this.textContent;
+    }
 
     connectedCallback() {
-        this.contentEditable = this.readonly === true ? 'false' : 'true';
-        this.oldValue = this.textContent.trim() || '';
+        this.contentEditable = this.hasAttribute('readonly') ? 'false' : 'true';
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
-        if (!this.multiline) {
+        if (!this.hasAttribute('multiline')) {
             this.addEventListener('keypress', this);
             this.addEventListener('paste', this);
         }
@@ -30,20 +33,26 @@ export class EditableContent extends HTMLElement {
             this.removeAttribute('editing');
             this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
-            this.textContent = this.oldValue;
+            this.textContent = this.previousTextContent;
             this.blur();
-        } else if (!this.multiline && e instanceof KeyboardEvent && e.type === 'keypress' && e.key === 'Enter') {
+        } else if (
+            !this.hasAttribute('multiline') &&
+            e instanceof KeyboardEvent &&
+            e.type === 'keypress' &&
+            e.key === 'Enter'
+        ) {
             e.preventDefault();
             this.commit();
         }
     }
 
     commit() {
-        const { oldValue } = this;
-        const newValue = this.textContent.trim();
-        this.oldValue = newValue;
+        const { textContent, previousTextContent } = this;
+        this.previousTextContent = textContent;
         this.blur();
-        this.dispatchEvent(new CustomEvent('edit', { detail: { newValue, oldValue } }));
+        if (previousTextContent !== textContent) {
+            this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
+        }
     }
 }
 
