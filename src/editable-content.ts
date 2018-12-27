@@ -1,14 +1,23 @@
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
-    oldValue: string = '';
+
+    previousTextContent: HTMLElement['textContent'];
+
+    constructor() {
+        super();
+        this.previousTextContent = this.textContent;
+    }
 
     connectedCallback() {
-        this.contentEditable = this.contentEditable || 'true';
-        this.oldValue = this.textContent || '';
+        this.contentEditable = this.hasAttribute('readonly') ? 'false' : 'true';
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
+        if (!this.hasAttribute('multiline')) {
+            this.addEventListener('keypress', this);
+            this.addEventListener('paste', this);
+        }
     }
 
     disconnectedCallback() {
@@ -22,15 +31,28 @@ export class EditableContent extends HTMLElement {
             this.setAttribute('editing', '');
         } else if (e.type === 'focusout') {
             this.removeAttribute('editing');
+            this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
-            this.textContent = this.oldValue;
+            this.textContent = this.previousTextContent;
             this.blur();
+        } else if (
+            !this.hasAttribute('multiline') &&
+            e instanceof KeyboardEvent &&
+            e.type === 'keypress' &&
+            e.key === 'Enter'
+        ) {
+            e.preventDefault();
+            this.commit();
         }
     }
 
     commit() {
-        const { oldValue } = this;
-        this.dispatchEvent(new CustomEvent('edit', { detail: { newValue: this.textContent, oldValue } }));
+        const { textContent, previousTextContent } = this;
+        this.previousTextContent = textContent;
+        this.blur();
+        if (previousTextContent !== textContent) {
+            this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
+        }
     }
 }
 

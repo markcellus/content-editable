@@ -30,14 +30,14 @@ You can listen in on when the text field contents have changed.
 const element = document.querySelector('editable-content');
 element.addEventListener('edit', () => {
     // the element lost focused after text has been changed
-    console.log(e.detail.oldValue); // old value
-    console.log(e.detail.newValue); // new value after change
+    console.log(e.detail.textContent); // new value after change
+    console.log(e.detail.previousTextContent); // old value
 });
 ```
 
-| Event  | Type          | Description                                                            |
-| ------ | ------------- | ---------------------------------------------------------------------- |
-| `edit` | `CustomEvent` | Fired when the text value has been changed and the element loses focus |
+| Event  | Type          | Description                                                                                                                                                                                                                                                  |
+| ------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `edit` | `CustomEvent` | Fired with a custom event when the text value has been successfully changed to a new value. The event `detail` will include both a `textContent` field that contains the updated value and a `previousTextContent` field that contains the last-known value. |
 
 Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
@@ -52,3 +52,10 @@ editable-content[editing] {
     background-color: blue;
 }
 ```
+
+### Attributes
+
+| Attribute   | Type      | Default | Description                                                                                                                    |
+| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                    |
+| `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. |
