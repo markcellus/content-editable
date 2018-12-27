@@ -35,9 +35,9 @@ element.addEventListener('edit', () => {
 });
 ```
 
-| Event  | Type          | Description                                                                                                                                                                                                                                                                                        |
-| ------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `edit` | `CustomEvent` | Fired with a custom event when the text value has been changed and the new value has been successfully changed. The event `detail` will include both a `textContent` field that contains the updated value and a `previousTextContent` field that contains the last-known value before the change. |
+| Event  | Type          | Description                                                                                                                                                                                                                                                  |
+| ------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `edit` | `CustomEvent` | Fired with a custom event when the text value has been successfully changed to a new value. The event `detail` will include both a `textContent` field that contains the updated value and a `previousTextContent` field that contains the last-known value. |
 
 Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
