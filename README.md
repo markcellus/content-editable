@@ -38,6 +38,7 @@ element.addEventListener('edit', () => {
 | Event  | Type          | Description                                                            |
 | ------ | ------------- | ---------------------------------------------------------------------- |
 | `edit` | `CustomEvent` | Fired when the text value has been changed and the element loses focus |
+| `resize`    | `Boolean` | Whether the element should automatically grow its original height to accommodate new lines. If not specified, the height of the editable area will remain at its initial height and will scroll if there is overflowing text. |
 
 Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
