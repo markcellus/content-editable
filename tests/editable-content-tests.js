@@ -69,18 +69,23 @@ describe('Editable Content', () => {
         component.remove();
     });
 
+    it('should NOT fire edit event with new and old value when pressing enter key or blurring after changing if readonly is set', () => {
+        const previousTextContent = 'Test';
+        const component = document.createElement('editable-content');
+        component.setAttribute('readonly', '');
+        component.innerHTML = previousTextContent;
+        document.body.appendChild(component);
+        const editSpy = sinon.spy();
+        component.addEventListener('edit', editSpy);
+        component.focus();
+        expect(editSpy.callCount).to.equal(0);
+        const keypressEvent = new KeyboardEvent('keypress', { key: 'Enter' });
+        component.dispatchEvent(keypressEvent);
+        expect(editSpy.callCount).to.equal(0);
+        component.remove();
+    });
+
     describe('when parsing html', function() {
-        it('should render contents inside of a pre tag', () => {
-            const text = 'Paragraph Text';
-            const component = document.createElement('editable-content');
-            component.innerHTML = `<p>${text}</p>`;
-            document.body.appendChild(component);
-            const pres = component.querySelectorAll('pre');
-            expect(pres.length).to.equal(1);
-            const [pre] = pres;
-            expect(pre.innerHTML).to.equal(text);
-            component.remove();
-        });
 
         it('should parse paragraph tags', () => {
             const text = 'Paragraph Text';
@@ -90,6 +95,32 @@ describe('Editable Content', () => {
             expect(component.children.length).to.equal(1);
             const [child] = component.children;
             expect(child.innerHTML).to.equal(text);
+            component.remove();
+        });
+
+        it('should convert links to anchors if readonly is set to true', () => {
+            const url = 'http://test.com';
+            const content = `My link is ${url}`;
+            const component = document.createElement('editable-content');
+            component.setAttribute('readonly', '');
+            component.innerHTML = content;
+            document.body.appendChild(component);
+            const anchors = component.querySelectorAll('a');
+            expect(anchors.length).to.equal(1);
+            const [anchor] = anchors;
+            expect(anchor.href).to.equal(url);
+            component.remove();
+        });
+
+        it('should NOT convert links to anchors if readonly is not set', () => {
+            const content = `My link is http://test.com`;
+            const component = document.createElement('editable-content');
+            component.innerHTML = content;
+            document.body.appendChild(component);
+            const anchors = component.querySelectorAll('a');
+            expect(anchors.length).to.equal(0);
+            const [anchor] = anchors;
+            expect(component.innerText).to.equal(content);
             component.remove();
         });
     });
