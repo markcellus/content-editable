@@ -59,3 +59,13 @@ editable-content[editing] {
 | ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                    |
 | `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. |
+
+
+### Formatting
+
+If you would like for line breaks or any other formatting to be respected, just apply `white-space` css property.
+
+```css
+editable-content {
+    white-space: pre;
+}
