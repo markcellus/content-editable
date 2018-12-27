@@ -1,3 +1,5 @@
+import anchorme from 'anchorme';
+
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
@@ -22,17 +24,7 @@ export class EditableContent extends HTMLElement {
         if (!value) return;
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(value, 'text/html');
-        const frag = document.createDocumentFragment();
-        const pre = document.createElement('pre');
-        pre.style.font = 'inherit';
-        frag.appendChild(pre);
-        const { childNodes } = htmlDoc.body;
-
-        for (const node of Array.from(childNodes)) {
-            pre.appendChild(node);
-        }
-        this.innerHTML = '';
-        this.appendChild(frag);
+        this.innerHTML = anchorme(htmlDoc.body.innerHTML);
     }
 
     disconnectedCallback() {

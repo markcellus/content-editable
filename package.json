@@ -63,5 +63,8 @@
         "tslint-config-prettier": "^1.15.0",
         "typescript": "^3.1.6",
         "uglify-es": "^3.3.9"
+    },
+    "dependencies": {
+        "anchorme": "^1.1.2"
     }
 }
