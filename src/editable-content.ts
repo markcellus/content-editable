@@ -9,6 +9,7 @@ export class EditableContent extends HTMLElement {
     connectedCallback() {
         const readonly = this.hasAttribute('readonly');
         this.contentEditable = readonly ? 'false' : 'true';
+
         this.parse();
         if (readonly) {
             return;
@@ -62,7 +63,14 @@ export class EditableContent extends HTMLElement {
     }
 
     private parse() {
-        let innerHTML = this.innerHTML.trim();
+        // remove all possible whitespace in HTML
+        const {firstChild, lastChild} = this;
+        [firstChild, lastChild].forEach((node: any) => {
+            if (node.textContent && !node.textContent.trim()) {
+                node.remove();
+            }
+        })
+
         if (this.hasAttribute('readonly')) {
             const { childNodes } = this;
             childNodes.forEach(node => {
@@ -85,7 +93,6 @@ export class EditableContent extends HTMLElement {
                     }
                 });
             });
-            innerHTML = anchorme(innerHTML);
         }
     }
 }
