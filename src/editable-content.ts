@@ -1,16 +1,14 @@
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
-
-    previousTextContent: HTMLElement['textContent'];
-
-    constructor() {
-        super();
-        this.previousTextContent = this.textContent;
-    }
+    previousTextContent?: HTMLElement['textContent'];
 
     connectedCallback() {
         this.contentEditable = this.hasAttribute('readonly') ? 'false' : 'true';
+        this.previousTextContent = this.textContent;
+        if (this.textContent) {
+            this.parseContent(this.textContent);
+        }
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
@@ -18,6 +16,23 @@ export class EditableContent extends HTMLElement {
             this.addEventListener('keypress', this);
             this.addEventListener('paste', this);
         }
+    }
+
+    parseContent(value?: HTMLElement['textContent']) {
+        if (!value) return;
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(value, 'text/html');
+        const frag = document.createDocumentFragment();
+        const pre = document.createElement('pre');
+        pre.style.font = 'inherit';
+        frag.appendChild(pre);
+        const { childNodes } = htmlDoc.body;
+
+        for (const node of Array.from(childNodes)) {
+            pre.appendChild(node);
+        }
+        this.innerHTML = '';
+        this.appendChild(frag);
     }
 
     disconnectedCallback() {
@@ -33,7 +48,7 @@ export class EditableContent extends HTMLElement {
             this.removeAttribute('editing');
             this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
-            this.textContent = this.previousTextContent;
+            this.parseContent(this.previousTextContent);
             this.blur();
         } else if (
             !this.hasAttribute('multiline') &&
@@ -49,6 +64,7 @@ export class EditableContent extends HTMLElement {
     commit() {
         const { textContent, previousTextContent } = this;
         this.previousTextContent = textContent;
+        this.parseContent(textContent);
         this.blur();
         if (previousTextContent !== textContent) {
             this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
