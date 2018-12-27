@@ -4,13 +4,28 @@ const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
     previousTextContent?: HTMLElement['textContent'];
+    private observer?: MutationObserver;
 
     connectedCallback() {
-        this.contentEditable = this.hasAttribute('readonly') ? 'false' : 'true';
+        const readonly = this.hasAttribute('readonly');
+        this.contentEditable = readonly ? 'false' : 'true';
         this.previousTextContent = this.textContent;
         if (this.textContent) {
             this.parseContent(this.textContent);
         }
+        if (readonly) return;
+
+        this.observer = new MutationObserver(mutationsList => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    if (this.textContent) {
+                        this.parseContent(this.textContent);
+                    }
+                }
+            }
+        });
+        this.observer.observe(this, { childList: true, subtree: true });
+
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
@@ -24,10 +39,15 @@ export class EditableContent extends HTMLElement {
         if (!value) return;
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(value, 'text/html');
-        this.innerHTML = anchorme(htmlDoc.body.innerHTML);
+        const { innerHTML } = htmlDoc.body;
+        if (innerHTML === this.innerHTML) return;
+        this.innerHTML = this.hasAttribute('readonly') ? anchorme(innerHTML) : innerHTML;
     }
 
     disconnectedCallback() {
+        if (this.observer) {
+            this.observer.disconnect();
+        }
         SUPPORTED_EVENTS.forEach(type => {
             this.removeEventListener(type, this);
         });
@@ -55,8 +75,8 @@ export class EditableContent extends HTMLElement {
 
     commit() {
         const { textContent, previousTextContent } = this;
-        this.previousTextContent = textContent;
         this.parseContent(textContent);
+        this.previousTextContent = textContent;
         this.blur();
         if (previousTextContent !== textContent) {
             this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
