@@ -30,7 +30,7 @@
         "node": ">=10"
     },
     "main": "dist/editable-content.js",
-    "types": "dist/editable-content.ts",
+    "types": "dist/editable-content.d.ts",
     "scripts": {
         "test": "karma start karma.conf.js && npm run lint",
         "test-server": "karma start karma.conf.js --single-run=false",
