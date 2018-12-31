@@ -1,31 +1,19 @@
 module.exports = function(config) {
     config.set({
-        files: ['src/**/*.ts', 'tests/**/*.js'],
-
+        files: ['tests/**/*.ts', 'src/**/*.ts'],
         preprocessors: {
-            'tests/**/*.js': ['rollup'],
-            'src/**/*.ts': ['rollup', 'typescript']
+            '**/*.ts': ['karma-typescript'],
         },
-        typescriptPreprocessor: {
-            options: {
-                sourceMap: false,
-                target: 'es6',
-                module: 'esnext'
-            }
-        },
-        rollupPreprocessor: {
-            output: {
-                format: 'umd',
-                sourcemap: 'inline'
+        karmaTypescriptConfig: {
+            compilerOptions: {
+                module: "commonjs",
+                sourceMap: true,
+                target: "es6"
             },
-            plugins: [
-                require('rollup-plugin-node-resolve')(),
-                require('rollup-plugin-typescript2')(),
-                require('rollup-plugin-commonjs')
-            ]
+            exclude: ["node_modules"]
         },
         reporters: ['progress'],
-        frameworks: ['mocha'],
+        frameworks: ['mocha', 'karma-typescript'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
