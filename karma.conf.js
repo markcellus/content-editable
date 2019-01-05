@@ -12,7 +12,7 @@ module.exports = function(config) {
             },
             exclude: ["node_modules"]
         },
-        reporters: ['progress'],
+        reporters: ['progress', 'karma-typescript'],
         frameworks: ['mocha', 'karma-typescript'],
         port: 9876,
         colors: true,
