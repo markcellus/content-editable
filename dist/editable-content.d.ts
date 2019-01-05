@@ -1,8 +1,9 @@
 export declare class EditableContent extends HTMLElement {
-    previousTextContent: HTMLElement['textContent'];
-    constructor();
+    previousInnerHTML?: HTMLElement['textContent'];
     connectedCallback(): void;
     disconnectedCallback(): void;
     handleEvent(e: Event | KeyboardEvent): void;
-    commit(): void;
+    private commit;
+    private parseLinks;
+    private parse;
 }

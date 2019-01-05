@@ -1,6 +1,6 @@
 {
     "name": "editable-content",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "description": "An HTML element that makes its content editable",
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
