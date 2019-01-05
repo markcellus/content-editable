@@ -32,20 +32,6 @@ Then, when clicking anywhere on the element, a text field will show allowing the
 | `readonly`  | `Boolean` | `false` | Whether the text should be editable or not.                                                                                    |
 | `multiline` | `Boolean` | `false` | Whether pressing enter should create a newline. If this is set to `true`, pressing enter will update the value to the new one. |
 
-
-### Methods
-
-#### renderContent([html])
-
-```javascript
-const element = document.querySelector('editable-content');
-element.renderContent(`<strong>This will be bold</strong> <br />This will appear on a new line`)
-```
-
-| Option    | Type              | Description    |
-| --------- | ----------------- | ------------------------------------------------------------------------------------------------ |
-| `html` | `String`     | An html string to render into the element    |
-
 ### Events
 
 You can listen in on when the text field contents have changed.
