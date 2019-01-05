@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/mkay581/editable-content.svg?branch=master)](https://travis-ci.org/mkay581/editable-content)
 [![npm version](https://badge.fury.io/js/editable-content.svg)](https://www.npmjs.com/package/editable-content)
+[![Coverage Status](https://coveralls.io/repos/github/mkay581/editable-content/badge.svg?branch=master)](https://coveralls.io/github/mkay581/editable-content?branch=master)
 
 # Editable Content
 
