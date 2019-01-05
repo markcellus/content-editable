@@ -62,37 +62,43 @@ export class EditableContent extends HTMLElement {
         }
     }
 
+    private parseLinks(element: Element) {
+        if (element.children.length) {
+            const children = Array.from(element.children);
+            children.forEach(child => {
+                this.parseLinks(child);
+            });
+        } else if (element.textContent && element.textContent.trim()) {
+            const urls = anchorme(element.innerHTML, {
+                list: true,
+                emails: false,
+                urls: true,
+                ips: false,
+                files: false
+            });
+            urls.forEach((item: URLObj) => {
+                const { raw: url } = item;
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(`<a href="${url}">${url}</a>`, 'text/html');
+                const anchor = htmlDoc.body.querySelector('a');
+                if (anchor) {
+                    element.innerHTML = anchorme(element.innerHTML);
+                }
+            });
+        }
+    }
+
     private parse() {
         // remove all possible whitespace in HTML
-        const {firstChild, lastChild} = this;
+        const { firstChild, lastChild } = this;
         [firstChild, lastChild].forEach((node: any) => {
             if (node.textContent && !node.textContent.trim()) {
                 node.remove();
             }
-        })
+        });
 
         if (this.hasAttribute('readonly')) {
-            const { childNodes } = this;
-            childNodes.forEach(node => {
-                const urls = anchorme(node.textContent, {
-                    list: true,
-                    emails: false,
-                    urls: true,
-                    ips: false,
-                    files: false
-                });
-                urls.forEach((item: URLObj) => {
-                    if (node.textContent) {
-                        const { raw: url } = item;
-                        const parser = new DOMParser();
-                        const htmlDoc = parser.parseFromString(`<a href="${url}">${url}</a>`, 'text/html');
-                        const anchor = htmlDoc.body.querySelector('a');
-                        if (anchor) {
-                            node.childNodes[0].replaceWith(anchor);
-                        }
-                    }
-                });
-            });
+            this.parseLinks(this);
         }
     }
 }
