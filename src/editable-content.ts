@@ -1,16 +1,19 @@
+import anchorme from 'anchorme';
+import { URLObj } from 'anchorme/dist-node/util';
+
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
 export class EditableContent extends HTMLElement {
-
-    previousTextContent: HTMLElement['textContent'];
-
-    constructor() {
-        super();
-        this.previousTextContent = this.textContent;
-    }
+    previousInnerHTML?: HTMLElement['textContent'];
 
     connectedCallback() {
-        this.contentEditable = this.hasAttribute('readonly') ? 'false' : 'true';
+        const readonly = this.hasAttribute('readonly');
+        this.contentEditable = readonly ? 'false' : 'true';
+
+        this.parse();
+        if (readonly) {
+            return;
+        }
         SUPPORTED_EVENTS.forEach(type => {
             this.addEventListener(type, this);
         });
@@ -24,6 +27,8 @@ export class EditableContent extends HTMLElement {
         SUPPORTED_EVENTS.forEach(type => {
             this.removeEventListener(type, this);
         });
+        this.removeEventListener('keypress', this);
+        this.removeEventListener('paste', this);
     }
 
     handleEvent(e: Event | KeyboardEvent) {
@@ -33,7 +38,7 @@ export class EditableContent extends HTMLElement {
             this.removeAttribute('editing');
             this.commit();
         } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
-            this.textContent = this.previousTextContent;
+            this.parse();
             this.blur();
         } else if (
             !this.hasAttribute('multiline') &&
@@ -43,15 +48,49 @@ export class EditableContent extends HTMLElement {
         ) {
             e.preventDefault();
             this.commit();
+        } else if (e.type === 'paste') {
+            this.parse();
         }
     }
 
-    commit() {
-        const { textContent, previousTextContent } = this;
-        this.previousTextContent = textContent;
+    private commit() {
+        const { previousInnerHTML, innerHTML } = this;
+        this.parse();
         this.blur();
-        if (previousTextContent !== textContent) {
-            this.dispatchEvent(new CustomEvent('edit', { detail: { textContent, previousTextContent } }));
+        if (previousInnerHTML !== innerHTML) {
+            this.dispatchEvent(new CustomEvent('edit'));
+        }
+    }
+
+    private parseLinks(element: Element) {
+        if (element.children.length) {
+            const children = Array.from(element.children);
+            children.forEach(child => {
+                this.parseLinks(child);
+            });
+        } else if (element.textContent && element.textContent.trim()) {
+            const urls = anchorme(element.innerHTML, {
+                list: true,
+                emails: false,
+                urls: true,
+                ips: false,
+                files: false
+            });
+            urls.forEach((item: URLObj) => {
+                const { raw: url } = item;
+                const parser = new DOMParser();
+                const htmlDoc = parser.parseFromString(`<a href="${url}">${url}</a>`, 'text/html');
+                const anchor = htmlDoc.body.querySelector('a');
+                if (anchor) {
+                    element.innerHTML = anchorme(element.innerHTML);
+                }
+            });
+        }
+    }
+
+    private parse() {
+        if (this.hasAttribute('readonly')) {
+            this.parseLinks(this);
         }
     }
 }
