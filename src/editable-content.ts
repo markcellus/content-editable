@@ -89,14 +89,6 @@ export class EditableContent extends HTMLElement {
     }
 
     private parse() {
-        // remove all possible whitespace in HTML
-        const { firstChild, lastChild } = this;
-        [firstChild, lastChild].forEach((node: any) => {
-            if (node.textContent && !node.textContent.trim()) {
-                node.remove();
-            }
-        });
-
         if (this.hasAttribute('readonly')) {
             this.parseLinks(this);
         }

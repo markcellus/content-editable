@@ -53,7 +53,7 @@ You can listen in on when the text field contents have changed.
 ```javascript
 const element = document.querySelector('editable-content');
 element.addEventListener('edit', (e) => {
-     console.log(e.target.innerHTML); // the new value
+    console.log(e.target.innerHTML); // the new value
     console.log(e.target.previousInnerHTML); // old value
 });
 ```
