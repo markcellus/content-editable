@@ -1,4 +1,4 @@
-export declare class EditableContent extends HTMLElement {
+export declare class ContentEditable extends HTMLElement {
     previousInnerHTML?: HTMLElement['textContent'];
     connectedCallback(): void;
     disconnectedCallback(): void;

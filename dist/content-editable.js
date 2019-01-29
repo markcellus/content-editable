@@ -1,6 +1,6 @@
 /*!
- * Editable-content v3.2.0
- * https://github.com/mkay581/editable-content#readme
+ * Content-editable v1.0.0
+ * https://github.com/mkay581/content-editable#readme
  *
  * Copyright (c) 2019 Mark Kennedy
  * Licensed under the ISC license
@@ -438,7 +438,7 @@ exports.default = anchorme;
 var anchorme = unwrapExports(distNode);
 
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
-class EditableContent extends HTMLElement {
+class ContentEditable extends HTMLElement {
     connectedCallback() {
         const readonly = this.hasAttribute('readonly');
         this.contentEditable = readonly ? 'false' : 'true';
@@ -524,6 +524,6 @@ class EditableContent extends HTMLElement {
         }
     }
 }
-customElements.define('editable-content', EditableContent);
+customElements.define('content-editable', ContentEditable);
 
-export { EditableContent };
+export { ContentEditable };
