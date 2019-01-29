@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/mkay581/editable-content.svg?branch=master)](https://travis-ci.org/mkay581/editable-content)
-[![npm version](https://badge.fury.io/js/editable-content.svg)](https://www.npmjs.com/package/editable-content)
-[![Coverage Status](https://coveralls.io/repos/github/mkay581/editable-content/badge.svg?branch=master)](https://coveralls.io/github/mkay581/editable-content?branch=master)
+[![Build Status](https://travis-ci.org/mkay581/content-editable.svg?branch=master)](https://travis-ci.org/mkay581/content-editable)
+[![npm version](https://badge.fury.io/js/content-editable.svg)](https://www.npmjs.com/package/content-editable)
+[![Coverage Status](https://coveralls.io/repos/github/mkay581/content-editable/badge.svg?branch=master)](https://coveralls.io/github/mkay581/content-editable?branch=master)
 
-# Editable Content
+# Content Editable Component
 
 A custom element that makes its contents editable by changing itself into an text field, when a user clicks on it.
 
@@ -11,14 +11,14 @@ This library was created to support features missing in [the `contenteditable` p
 ## Installation
 
 ```bash
-npm i editable-content
+npm i content-editable
 ```
 
 ## Usage
 
 ```html
-<script src="node_modules/editable-content/dist/editable-content.js"></script>
-<editable-content>Change Me</editable-content>
+<script src="node_modules/content-editable/dist/content-editable.js"></script>
+<content-editable>Change Me</content-editable>
 ```
 
 Then, when clicking anywhere on the element, a text field will show allowing the user to change the text.
@@ -37,7 +37,7 @@ Then, when clicking anywhere on the element, a text field will show allowing the
 You can listen in on when the text field contents have changed.
 
 ```javascript
-const element = document.querySelector('editable-content');
+const element = document.querySelector('content-editable');
 element.addEventListener('edit', (e) => {
     console.log(e.target.innerHTML); // the new value
     console.log(e.target.previousInnerHTML); // old value
@@ -58,7 +58,7 @@ can style based on this attribute. The following turns the element's background 
 it is being edited.
 
 ```css
-editable-content[editing] {
+content-editable[editing] {
     background-color: blue;
 }
 ```
@@ -68,7 +68,7 @@ editable-content[editing] {
 If you would like for line breaks or any other formatting to be respected, just apply `white-space` css property.
 
 ```css
-editable-content {
+content-editable {
     white-space: pre;
 }
 ```

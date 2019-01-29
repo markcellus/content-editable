@@ -3,7 +3,7 @@ import { URLObj } from 'anchorme/dist-node/util';
 
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
-export class EditableContent extends HTMLElement {
+export class ContentEditable extends HTMLElement {
     previousInnerHTML?: HTMLElement['textContent'];
 
     connectedCallback() {
@@ -95,4 +95,4 @@ export class EditableContent extends HTMLElement {
     }
 }
 
-customElements.define('editable-content', EditableContent);
+customElements.define('content-editable', ContentEditable);

@@ -1,12 +1,12 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import '../src/editable-content';
+import '../src/content-editable';
 
 const { expect } = chai;
 
-describe('Editable Content', () => {
+describe('Content Editable', () => {
     it('should render inner content', () => {
-        const component = document.createElement('editable-content');
+        const component = document.createElement('content-editable');
         component.innerHTML = 'Test';
         document.body.appendChild(component);
         expect(component.textContent).to.equal('Test');
@@ -14,7 +14,7 @@ describe('Editable Content', () => {
     });
 
     it('should not set editing attribute when focusing into and remove when focus is lost', () => {
-        const component = document.createElement('editable-content');
+        const component = document.createElement('content-editable');
         component.innerHTML = 'Test';
         document.body.appendChild(component);
         component.focus();
@@ -25,7 +25,7 @@ describe('Editable Content', () => {
     });
 
     it('should not allow editing if has readonly attribute', () => {
-        const component = document.createElement('editable-content');
+        const component = document.createElement('content-editable');
         component.setAttribute('readonly', '');
         component.innerHTML = 'Test';
         document.body.appendChild(component);
@@ -37,7 +37,7 @@ describe('Editable Content', () => {
     describe('when parsing html', () => {
         it('should parse paragraph tags', () => {
             const text = 'Paragraph Text';
-            const component = document.createElement('editable-content');
+            const component = document.createElement('content-editable');
             component.innerHTML = `<p>${text}</p>`;
             document.body.appendChild(component);
             expect(component.children.length).to.equal(1);
@@ -49,7 +49,7 @@ describe('Editable Content', () => {
         it('should convert links to anchors if readonly is set to true', () => {
             const url = 'http://test.com/';
             const content = `My link is ${url}`;
-            const component = document.createElement('editable-content');
+            const component = document.createElement('content-editable');
             component.setAttribute('readonly', '');
             component.innerHTML = content;
             document.body.appendChild(component);
@@ -62,7 +62,7 @@ describe('Editable Content', () => {
 
         it('should NOT convert links to anchors if readonly is not set', () => {
             const content = `My link is http://test.com/`;
-            const component = document.createElement('editable-content');
+            const component = document.createElement('content-editable');
             component.innerHTML = content;
             document.body.appendChild(component);
             const anchors = component.querySelectorAll('a');

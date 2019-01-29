@@ -3,10 +3,10 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 
 export default {
-    input: 'src/editable-content.ts',
+    input: 'src/content-editable.ts',
     output: {
         format: 'esm',
-        file: 'dist/editable-content.js'
+        file: 'dist/content-editable.js'
     },
     plugins: [resolve(), typescript(), commonjs()],
     watch: {
