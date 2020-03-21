@@ -2,3 +2,6 @@ language: node_js
 node_js:
   - 'lts/*'
 after_success: 'npm run coveralls'
+branches:
+  only:
+  - master
