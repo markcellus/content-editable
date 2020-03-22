@@ -52,7 +52,7 @@
         "@types/sinon": "^7.0.3",
         "banner-cli": "0.14.1",
         "chai": "^4.2.0",
-        "karma": "^3.1.4",
+        "karma": "^4.4.1",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^3.1.0",
         "karma-coverage": "^1.1.2",
