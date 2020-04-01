@@ -48,7 +48,7 @@
     "devDependencies": {
         "@types/chai": "^4.1.7",
         "@types/mocha": "^7.0.2",
-        "@types/sinon": "^7.0.3",
+        "@types/sinon": "^9.0.0",
         "banner-cli": "0.14.1",
         "chai": "^4.2.0",
         "karma": "^4.4.1",
