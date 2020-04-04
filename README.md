@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/content-editable.svg)](https://www.npmjs.com/package/content-editable)
 [![Coverage Status](https://coveralls.io/repos/github/mkay581/content-editable/badge.svg?branch=master)](https://coveralls.io/github/mkay581/content-editable?branch=master)
 
-# Content Editable Component
+# `<content-editable>`
 
 A custom element that makes its contents editable by changing itself into an text field, when a user clicks on it.
 
