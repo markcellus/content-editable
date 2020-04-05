@@ -1,1 +1,6 @@
 dist/
+package*.json
+.gitignore
+.npmrc
+.prettierignore
+coverage/

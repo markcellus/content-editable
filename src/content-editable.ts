@@ -14,7 +14,7 @@ export class ContentEditable extends HTMLElement {
         if (readonly) {
             return;
         }
-        SUPPORTED_EVENTS.forEach(type => {
+        SUPPORTED_EVENTS.forEach((type) => {
             this.addEventListener(type, this);
         });
         if (!this.hasAttribute('multiline')) {
@@ -24,7 +24,7 @@ export class ContentEditable extends HTMLElement {
     }
 
     disconnectedCallback() {
-        SUPPORTED_EVENTS.forEach(type => {
+        SUPPORTED_EVENTS.forEach((type) => {
             this.removeEventListener(type, this);
         });
         this.removeEventListener('keypress', this);
@@ -37,7 +37,11 @@ export class ContentEditable extends HTMLElement {
         } else if (e.type === 'focusout') {
             this.removeAttribute('editing');
             this.commit();
-        } else if (e instanceof KeyboardEvent && e.type === 'keyup' && e.key === 'Escape') {
+        } else if (
+            e instanceof KeyboardEvent &&
+            e.type === 'keyup' &&
+            e.key === 'Escape'
+        ) {
             this.parse();
             this.blur();
         } else if (
@@ -65,7 +69,7 @@ export class ContentEditable extends HTMLElement {
     private parseLinks(element: Element) {
         if (element.children.length) {
             const children = Array.from(element.children);
-            children.forEach(child => {
+            children.forEach((child) => {
                 this.parseLinks(child);
             });
         } else if (element.textContent && element.textContent.trim()) {
@@ -74,12 +78,15 @@ export class ContentEditable extends HTMLElement {
                 emails: false,
                 urls: true,
                 ips: false,
-                files: false
+                files: false,
             });
             urls.forEach((item: URLObj) => {
                 const { raw: url } = item;
                 const parser = new DOMParser();
-                const htmlDoc = parser.parseFromString(`<a href="${url}">${url}</a>`, 'text/html');
+                const htmlDoc = parser.parseFromString(
+                    `<a href="${url}">${url}</a>`,
+                    'text/html'
+                );
                 const anchor = htmlDoc.body.querySelector('a');
                 if (anchor) {
                     element.innerHTML = anchorme(element.innerHTML);

@@ -1,21 +1,21 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         files: ['tests/**/*.ts', 'src/**/*.ts'],
         preprocessors: {
-            '**/*.ts': ['karma-typescript', 'coverage']
+            '**/*.ts': ['karma-typescript', 'coverage'],
         },
         karmaTypescriptConfig: {
             compilerOptions: {
                 module: 'commonjs',
                 sourceMap: true,
-                target: 'es6'
+                target: 'es6',
             },
-            exclude: ['node_modules']
+            exclude: ['node_modules'],
         },
         coverageReporter: {
             dir: 'coverage/',
             type: 'lcovonly',
-            subdir: '.'
+            subdir: '.',
         },
         reporters: ['progress', 'coverage'],
         frameworks: ['mocha', 'karma-typescript'],
@@ -25,6 +25,6 @@ module.exports = function(config) {
         browsers: ['ChromeHeadless'],
         autoWatch: true,
         singleRun: true,
-        concurrency: Infinity
+        concurrency: Infinity,
     });
 };

@@ -50,7 +50,6 @@ element.addEventListener('edit', (e) => {
 
 Of course, all of the other [events supported by any HTMLElement](https://html.spec.whatwg.org/multipage/webappapis.html#globaleventhandlers) are still available.
 
-
 ## Styling
 
 An `editing` attribute is applied to the element when the text inside of the element is in focus. So you
