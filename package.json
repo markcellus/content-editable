@@ -75,6 +75,6 @@
         "typescript": "^3.2.2"
     },
     "dependencies": {
-        "anchorme": "^1.1.2"
+        "anchorme": "^2.0.0"
     }
 }
