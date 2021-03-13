@@ -71,3 +71,17 @@ content-editable {
     white-space: pre;
 }
 ```
+
+## Development
+
+Run tests
+
+```bash
+npm test
+```
+
+Run static server in examples directory
+
+```bash
+npm start
+```
