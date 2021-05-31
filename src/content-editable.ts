@@ -1,8 +1,9 @@
+import anchorme from 'anchorme';
 import 'anchorme/dist/browser/anchorme';
 
 declare global {
     interface Window {
-        anchorme: any;
+        anchorme: typeof anchorme;
     }
 }
 
@@ -78,19 +79,7 @@ export class ContentEditable extends HTMLElement {
                 this.parseLinks(child);
             });
         } else if (element.textContent && element.textContent.trim()) {
-            const urls = anchorme.list(element.innerHTML);
-            urls.forEach((item) => {
-                const { raw: url } = item;
-                const parser = new DOMParser();
-                const htmlDoc = parser.parseFromString(
-                    `<a href="${url}">${url}</a>`,
-                    'text/html'
-                );
-                const anchor = htmlDoc.body.querySelector('a');
-                if (anchor) {
-                    element.innerHTML = anchorme(element.innerHTML);
-                }
-            });
+            element.innerHTML = window.anchorme(element.innerHTML);
         }
     }
 
