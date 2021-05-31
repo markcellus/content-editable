@@ -1,5 +1,10 @@
-import anchorme from 'anchorme';
-import { URLObj } from 'anchorme/dist-node/util';
+import 'anchorme/dist/browser/anchorme';
+
+declare global {
+    interface Window {
+        anchorme: any;
+    }
+}
 
 const SUPPORTED_EVENTS = ['focusin', 'focusout', 'keyup'];
 
