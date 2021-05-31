@@ -1,71 +1,64 @@
-import { expect } from '@open-wc/testing';
+import { expect, fixture, html } from '@open-wc/testing';
 import '../src/content-editable';
+import { ContentEditable } from '../src/content-editable';
 
 describe('Content Editable', () => {
-    it('should render inner content', () => {
-        const component = document.createElement('content-editable');
-        component.innerHTML = 'Test';
-        document.body.appendChild(component);
+    it('renders inner content', async () => {
+        const component = await fixture(html`
+            <content-editable>Test</content-editable>
+        `);
         expect(component.textContent).to.equal('Test');
-        component.remove();
     });
 
-    it('should not set editing attribute when focusing into and remove when focus is lost', () => {
-        const component = document.createElement('content-editable');
-        component.innerHTML = 'Test';
-        document.body.appendChild(component);
+    it('does NOT set editing attribute when focusing into and remove when focus is lost', async () => {
+        const component = await fixture<ContentEditable>(html`
+            <content-editable>Test</content-editable>
+        `);
         component.focus();
         expect(component.hasAttribute('editing')).to.equal(true);
         component.blur();
         expect(component.hasAttribute('editing')).to.equal(false);
-        component.remove();
     });
 
-    it('should not allow editing if has readonly attribute', () => {
-        const component = document.createElement('content-editable');
-        component.setAttribute('readonly', '');
-        component.innerHTML = 'Test';
-        document.body.appendChild(component);
+    it('sets contentEditable propery to false if has readonly attribute', async () => {
+        const component = await fixture<ContentEditable>(html`
+            <content-editable readonly>Test</content-editable>
+        `);
         component.focus();
         expect(component.contentEditable).to.equal('false');
-        component.remove();
     });
 
     describe('when parsing html', () => {
-        it('should parse paragraph tags', () => {
+        it('parses paragraph tags', async () => {
             const text = 'Paragraph Text';
-            const component = document.createElement('content-editable');
-            component.innerHTML = `<p>${text}</p>`;
-            document.body.appendChild(component);
+            const component = await fixture<ContentEditable>(html`
+                <content-editable><p>${text}</p></content-editable>
+            `);
             expect(component.children.length).to.equal(1);
-            const [child] = Array.from(component.children);
-            expect(child.innerHTML).to.equal(text);
-            component.remove();
+            const [p] = Array.from(component.children);
+            expect(p.textContent).to.equal(text);
         });
 
-        it('should convert links to anchors if readonly is set to true', () => {
+        it('converts links to anchors if readonly is set to true', async () => {
             const url = 'http://test.com/';
             const content = `My link is ${url}`;
-            const component = document.createElement('content-editable');
-            component.setAttribute('readonly', '');
-            component.innerHTML = content;
-            document.body.appendChild(component);
+            const component = await fixture<ContentEditable>(html`
+                <content-editable readonly>${content}</content-editable>
+            `);
             const anchors = component.querySelectorAll('a');
             expect(anchors.length).to.equal(1);
             const [anchor] = Array.from(anchors);
             expect(anchor.href).to.equal(url);
-            component.remove();
         });
 
-        it('should NOT convert links to anchors if readonly is not set', () => {
+        it('does NOT convert links to anchors if readonly is not set', async () => {
             const content = `My link is http://test.com/`;
-            const component = document.createElement('content-editable');
-            component.innerHTML = content;
-            document.body.appendChild(component);
+            const component = await fixture<ContentEditable>(html`
+                <content-editable><p>${content}</p></content-editable>
+            `);
             const anchors = component.querySelectorAll('a');
             expect(anchors.length).to.equal(0);
             expect(component.innerText).to.equal(content);
-            component.remove();
         });
     });
 });

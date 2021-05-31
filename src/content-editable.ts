@@ -78,14 +78,8 @@ export class ContentEditable extends HTMLElement {
                 this.parseLinks(child);
             });
         } else if (element.textContent && element.textContent.trim()) {
-            const urls = anchorme(element.innerHTML, {
-                list: true,
-                emails: false,
-                urls: true,
-                ips: false,
-                files: false,
-            });
-            urls.forEach((item: URLObj) => {
+            const urls = anchorme.list(element.innerHTML);
+            urls.forEach((item) => {
                 const { raw: url } = item;
                 const parser = new DOMParser();
                 const htmlDoc = parser.parseFromString(
