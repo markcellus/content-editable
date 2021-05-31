@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/mkay581/content-editable.svg?branch=master)](https://travis-ci.org/mkay581/content-editable)
+[![Build Status](https://travis-ci.org/markcellus/content-editable.svg?branch=master)](https://travis-ci.org/markcellus/content-editable)
 [![npm version](https://badge.fury.io/js/content-editable.svg)](https://www.npmjs.com/package/content-editable)
-[![Coverage Status](https://coveralls.io/repos/github/mkay581/content-editable/badge.svg?branch=master)](https://coveralls.io/github/mkay581/content-editable?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/markcellus/content-editable/badge.svg?branch=master)](https://coveralls.io/github/markcellus/content-editable?branch=master)
 
 # `<content-editable>`
 

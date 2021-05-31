@@ -7,12 +7,12 @@
     },
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/mkay581/content-editable/issues"
+        "url": "https://github.com/markcellus/content-editable/issues"
     },
-    "homepage": "https://github.com/mkay581/content-editable#readme",
+    "homepage": "https://github.com/markcellus/content-editable#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mkay581/content-editable.git"
+        "url": "git+https://github.com/markcellus/content-editable.git"
     },
     "keywords": [
         "content editable component",
