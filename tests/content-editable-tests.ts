@@ -1,8 +1,5 @@
-import * as chai from 'chai';
-import * as sinon from 'sinon';
+import { expect } from '@open-wc/testing';
 import '../src/content-editable';
-
-const { expect } = chai;
 
 describe('Content Editable', () => {
     it('should render inner content', () => {
@@ -18,9 +15,9 @@ describe('Content Editable', () => {
         component.innerHTML = 'Test';
         document.body.appendChild(component);
         component.focus();
-        expect(component.hasAttribute('editing')).equal(true);
+        expect(component.hasAttribute('editing')).to.equal(true);
         component.blur();
-        expect(component.hasAttribute('editing')).equal(false);
+        expect(component.hasAttribute('editing')).to.equal(false);
         component.remove();
     });
 
