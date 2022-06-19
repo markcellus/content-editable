@@ -30,7 +30,7 @@
     ],
     "author": "Mark Kennedy <mark@heyimmark.com> (heyimmark.com)",
     "engines": {
-        "node": ">=14"
+        "node": ">=14.19"
     },
     "main": "dist/content-editable.js",
     "types": "dist/content-editable.d.ts",
