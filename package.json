@@ -57,7 +57,7 @@
         "@types/sinon": "^10.0.1",
         "@typescript-eslint/eslint-plugin": "^4.26.0",
         "@typescript-eslint/parser": "^4.26.0",
-        "@web/dev-server-esbuild": "^0.2.12",
+        "@web/dev-server-esbuild": "^0.3.0",
         "@web/test-runner": "^0.13.5",
         "banner-cli": "0.14.3",
         "chai": "^4.2.0",
