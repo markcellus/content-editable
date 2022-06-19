@@ -51,7 +51,7 @@
         "coveralls": "cat ./coverage/lcov.info | coveralls"
     },
     "devDependencies": {
-        "@open-wc/testing": "^2.5.33",
+        "@open-wc/testing": "^3.1.5",
         "@types/chai": "^4.1.7",
         "@types/mocha": "^8.0.3",
         "@types/sinon": "^10.0.1",
