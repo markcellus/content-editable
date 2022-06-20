@@ -34,14 +34,16 @@
     },
     "main": "dist/content-editable.js",
     "types": "dist/content-editable.d.ts",
-    "files": ["dist/**/*"],
+    "files": [
+        "dist/**/*"
+    ],
     "scripts": {
         "test": "web-test-runner && npm run lint",
         "test:src": "web-test-runner",
         "preversion": "npm test",
         "banner": "banner-cli dist/*.js",
         "build": "rm -rf dist/* && rollup -c",
-        "version": "npm run build && npm run banner && git add -A dist",
+        "version": "npm run build && npm run banner",
         "postversion": "git push && git push --tags",
         "build:dev": "rollup -c --watch --dev",
         "start": "run-p build:dev serve",
