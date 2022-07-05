@@ -28,7 +28,7 @@
         "editable",
         "edit text field"
     ],
-    "author": "Mark Kennedy <mark@heyimmark.com> (heyimmark.com)",
+    "author": "Mark",
     "engines": {
         "node": ">=14.19"
     },
